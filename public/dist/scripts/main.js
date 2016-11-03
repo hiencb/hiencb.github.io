@@ -98,6 +98,7 @@
 
   angular.module('mainApp')
     .constant('apiUrl', 'http://pokeapi.co/api/v2')
+    .constant('pokeServiceUrl', 'https://pokeservice.herokuapp.com/')
     .constant('themesUrl', 'public/resources/data/themes.json')
     .constant('commonFn', commonFn);
 
@@ -211,8 +212,8 @@
   'use strict';
   angular.module('mainApp').factory('pokeService', pokeService);
 
-  pokeService.$inject = ['$q', '$http', 'apiUrl', 'commonFn'];
-  function pokeService($q, $http, apiUrl, commonFn) {
+  pokeService.$inject = ['$q', '$http', 'apiUrl', 'pokeServiceUrl', 'commonFn'];
+  function pokeService($q, $http, apiUrl, pokeServiceUrl, commonFn) {
     const cache = { data: {}, categories: null };
 
     return {
@@ -221,7 +222,7 @@
     };
 
     function getData(path = '/') {
-      const url = commonFn.normalizePath(commonFn.getAbsolutePath(path, apiUrl));
+      const url = commonFn.normalizePath(commonFn.getAbsolutePath(path, pokeServiceUrl));
       const cachedData = cache.data[url];
       if (cachedData) return $q.when(cachedData);
 
@@ -254,13 +255,13 @@
         }
       };
 
-      if (commonFn.pathsEqual(url, apiUrl)) {
+      if (commonFn.pathsEqual(url, pokeServiceUrl)) {
         res.navInfo.current = 'Home';
         res.name = 'Categories';
         return res;
       }
 
-      const relativePath = commonFn.getRelativePath(url, apiUrl);
+      const relativePath = commonFn.getRelativePath(url, pokeServiceUrl);
       const rawName = data.name || commonFn.getPathName(relativePath);
       res.name = res.navInfo.current = commonFn.normalize(rawName);
       res.navInfo.navs.push({ name: 'Home', path: '/' });
