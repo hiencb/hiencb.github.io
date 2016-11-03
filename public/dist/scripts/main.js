@@ -8,28 +8,6 @@
 // ReSharper disable UndeclaredGlobalVariableUsing
 (function () {
   'use strict';
-  angular.module('mainApp').directive('cbBreadcrumb', breadcrumbDirective);
-
-  breadcrumbDirective.$inject = [];
-  function breadcrumbDirective() {
-    const template = `
-<ol class="breadcrumb">
-  <li ng-repeat="nav in data.navs">
-    <a ng-href="{{nav.path}}">{{nav.name}}</a>
-  </li>
-  <li class="active">{{data.current}}</li>
-</ol>`;
-
-    return {
-      replace: true,
-      scope: { data: '<' },
-      template
-    };
-  }
-})();
-// ReSharper disable UndeclaredGlobalVariableUsing
-(function () {
-  'use strict';
   angular.module('mainApp').config(config);
 
   config.$inject = ['$locationProvider', 'dataViewServiceProvider', 'apiUrl', 'commonFn'];
@@ -159,8 +137,8 @@
 
   angular.module('mainApp').controller('mainController', MainController);
 
-  MainController.$inject = ['$scope', '$location', '$log', '$http', 'pokeService', 'themesService'];
-  function MainController($scope, $location, $log, $http, pokeService, themesService) {
+  MainController.$inject = ['$scope', '$location', '$log', '$http', 'pokeService', 'themesService', 'commonFn'];
+  function MainController($scope, $location, $log, $http, pokeService, themesService, commonFn) {
     const vm = this;
     vm.title = 'PokéCOOL';
     vm.subtitle = 'A pokémon encyclopedia - Everything you want to know about Pokémon';
@@ -201,7 +179,7 @@
     }
 
     function activeClass(path) {
-      return path === $location.url() ? 'active' : '';
+      return commonFn.pathsEqual(path, $location.url()) ? 'active' : '';
     }
   }
 })();
