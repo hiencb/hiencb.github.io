@@ -1,0 +1,21 @@
+{
+  "name": "cb-ui",
+  "description": "UI modules for AngularJS 1.x",
+  "main": "cb-ui.js",
+  "authors": [
+    "ICodeMyOwnLife"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Angular",
+    "UI"
+  ],
+  "homepage": "https://github.com/ICodeMyOwnLife/cb-ng-ui",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
