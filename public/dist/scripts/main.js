@@ -78,7 +78,7 @@
 
   angular.module('mainApp')
     .constant('apiUrl', 'http://pokeapi.co/api/v2')
-    .constant('themesUrl', 'public/resources/data/themes.json')
+    .constant('themesUrl', '/public/resources/data/themes.json')
     .constant('commonFn', commonFn);
 
   function normalize(value) {
@@ -86,7 +86,7 @@
   }
 
   function createRoutePath(path, html5Mode) {
-    return html5Mode || isUrl(path) ? path : joinPaths('/#/', path);
+    return html5Mode || isUrl(path) ? path : joinPaths('#', path);
   }
 
   function getAbsolutePath(relativePath, base) {
@@ -107,9 +107,11 @@
   }
 
   function joinPaths(...parts) {
-    return parts.reduce((acc, cur) => {
+    /*return parts.reduce((acc, cur) => {
       return `${removeTrailingSlash(acc)}/${removeLeadingSlash(cur)}`;
-    }, '');
+    }, '');*/
+
+    return parts.map(normalizePath).join('/');
   }
 
   function isSubPath(path, base) {
