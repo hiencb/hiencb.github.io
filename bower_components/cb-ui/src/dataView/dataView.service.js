@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView')
+  angular.module('cb.dataView')
     .provider('dataViewService', DataViewServiceProvider);
 
   DataViewServiceProvider.$inject = ['lodash'];

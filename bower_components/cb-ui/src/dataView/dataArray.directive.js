@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView')
+  angular.module('cb.dataView')
     .directive('cbDataArray', cbDataArray);
 
   cbDataArray.$inject = [];

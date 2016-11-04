@@ -2,5 +2,5 @@
 (function () {
   'use strict';
 
-  angular.module('cb.dataView', []);
+  angular.module('cb.debugView', []);
 })();

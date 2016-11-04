@@ -1,1 +1,1 @@
-<ol class="breadcrumb"><li ng-repeat="nav in vm.breadcrumb.navs"><a ng-href="{{nav.path}}">{{nav.name}}</a></li><li class="active">{{vm.breadcrumb.current}}</li></ol>
+<ol class="breadcrumb"><li ng-repeat="nav in vm.breadcrumb.navs"><a class="pointer" ng-click="vm.navigate(nav.path)">{{nav.name}}</a></li><li class="active">{{vm.breadcrumb.current}}</li></ol>

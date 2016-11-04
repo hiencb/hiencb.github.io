@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   
-  angular.module('mainApp', ['ngRoute', 'ngAnimate', 'angular-loading-bar', 'dataView']);
+  angular.module('mainApp', ['ngRoute', 'ngCookies', 'ngAnimate', 'angular-loading-bar', 'cb.dataView', 'cb.debugView']);
 })();
 // ReSharper disable UndeclaredGlobalVariableUsing
 (function () {
@@ -12,7 +12,7 @@
 
   config.$inject = ['$locationProvider', 'dataViewServiceProvider', 'apiUrl', 'commonFn'];
   function config(locPrd, dvsPrd, apiUrl, commonFn) {
-    locPrd.html5Mode(true);
+    locPrd.html5Mode(false);
 
     dvsPrd.className('object-list', 'unstyled');
     dvsPrd.className('panel-item', 'panel');
@@ -44,7 +44,8 @@
     }
     
     function getApiPath(url) {
-      return commonFn.getRelativePath(url, apiUrl);
+      const relativePath = commonFn.getRelativePath(url, apiUrl);
+      return commonFn.createRoutePath(relativePath, locPrd.html5Mode().enabled);
     }
 
     function getPathName(url) {
@@ -60,6 +61,7 @@
 (function () {
   'use strict';
   const commonFn = {
+    createRoutePath,
     extractPaths,
     getAbsolutePath,
     getPathName,
@@ -76,12 +78,15 @@
 
   angular.module('mainApp')
     .constant('apiUrl', 'http://pokeapi.co/api/v2')
-    .constant('pokeServiceUrl', 'https://pokeservice.herokuapp.com/')
     .constant('themesUrl', 'public/resources/data/themes.json')
     .constant('commonFn', commonFn);
 
   function normalize(value) {
     return value === null || value === undefined ? '' : _.startCase(value.toString());
+  }
+
+  function createRoutePath(path, html5Mode) {
+    return html5Mode || isUrl(path) ? path : joinPaths('/#/', path);
   }
 
   function getAbsolutePath(relativePath, base) {
@@ -126,7 +131,7 @@
   function normalizePath(path) {
     return removeLeadingSlash(removeTrailingSlash(path)).toLowerCase();
   }
-  
+
   function extractPaths(path) {
     return path.match(/[^\/]+/g) || path;
   }
@@ -148,9 +153,11 @@
       'About': '/about'
     };
     vm.debug = { shown: false };
-    vm.selectedTheme = {};
+    vm.themesServive = themesService;
     vm.categories = {};
     vm.activeClass = activeClass;
+    vm.navigate = navigate;
+    vm.test = item => console.log(item || 'test') || 1;
     activate();
 
 
@@ -159,11 +166,11 @@
     });
 
     function activate() {
-      themesService.getThemes()
+      /*themesService.getThemes()
         .then(themes => {
           vm.themes = themes;
           vm.selectedTheme = themes[0];
-        });
+        });*/
 
       pokeService.getCategories().then(categories => vm.categories = categories).catch(error => vm.error = error);
     }
@@ -180,6 +187,10 @@
 
     function activeClass(path) {
       return commonFn.pathsEqual(path, $location.url()) ? 'active' : '';
+    }
+
+    function navigate(path) {
+      $location.path(path);
     }
   }
 })();
@@ -276,12 +287,43 @@
 
   angular.module('mainApp').factory('themesService', themesService);
 
-  themesService.$inject = ['$http', 'themesUrl'];
-  function themesService($http, themesUrl) {
-    return { getThemes };
+  themesService.$inject = ['$http', '$cookies', 'themesUrl'];
+  function themesService($http, $cookies, themesUrl) {
+    const THEME_COOKIE = '$theme$';
 
-    function getThemes() {
-      return $http.get(themesUrl).then(res => res.data);
+    const svc = {
+      themes: [],
+      currentTheme: null,
+      persist: persist
+    };
+
+    activate();
+    return svc;
+
+    function persist(theme) {
+      const themeName = theme && theme.name || theme || svc.currentTheme.name;
+      if (themeName) $cookies.put(THEME_COOKIE, themeName);
+    }
+
+    function activate() {
+      return $http.get(themesUrl)
+        .then(res => {
+          const themes = res.data;
+          svc.themes = themes;
+          const cookieThemeName = $cookies.get(THEME_COOKIE);
+          svc.currentTheme = cookieThemeName && themes.find(t => t.name === cookieThemeName) || themes[0];
+        });
     }
   }
+})();
+// ReSharper disable UndeclaredGlobalVariableUsing
+(function () {
+  'use strict';
+  const env = 'production';
+
+  angular.module('mainApp')
+    .constant('pokeServiceUrl', 'https://pokeservice.herokuapp.com/')
+    .constant('environment', env);
+
+  console.log(env);
 })();

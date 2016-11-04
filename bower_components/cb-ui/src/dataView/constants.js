@@ -2,6 +2,6 @@
 (function () {
   'use strict';
 
-  angular.module('dataView')
+  angular.module('cb.dataView')
     .constant('lodash', _);
 })();

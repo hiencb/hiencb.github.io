@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView', []);
+  angular.module('cb.dataView', []);
 })();
 'use strict';
 
@@ -12,7 +12,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').constant('lodash', _);
+  angular.module('cb.dataView').constant('lodash', _);
 })();
 'use strict';
 
@@ -20,7 +20,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataArray', cbDataArray);
+  angular.module('cb.dataView').directive('cbDataArray', cbDataArray);
 
   cbDataArray.$inject = [];
   function cbDataArray() {
@@ -45,7 +45,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataLinkObject', cbDataLinkObject);
+  angular.module('cb.dataView').directive('cbDataLinkObject', cbDataLinkObject);
 
   cbDataLinkObject.$inject = [];
   function cbDataLinkObject() {
@@ -70,7 +70,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataLinkString', cbDataLinkString);
+  angular.module('cb.dataView').directive('cbDataLinkString', cbDataLinkString);
 
   cbDataLinkString.$inject = [];
   function cbDataLinkString() {
@@ -95,7 +95,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataNode', cbDataNode);
+  angular.module('cb.dataView').directive('cbDataNode', cbDataNode);
 
   cbDataNode.$inject = [];
   function cbDataNode() {
@@ -120,7 +120,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataObject', cbDataObject);
+  angular.module('cb.dataView').directive('cbDataObject', cbDataObject);
 
   cbDataObject.$inject = [];
   function cbDataObject() {
@@ -145,7 +145,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataValue', cbDataValue);
+  angular.module('cb.dataView').directive('cbDataValue', cbDataValue);
 
   cbDataValue.$inject = [];
   function cbDataValue() {
@@ -169,7 +169,7 @@
 (function () {
   'use strict';
 
-  angular.module('dataView').directive('cbDataView', cbDataView);
+  angular.module('cb.dataView').directive('cbDataView', cbDataView);
 
   cbDataView.$inject = [];
   function cbDataView() {
@@ -192,7 +192,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 (function () {
   'use strict';
 
-  angular.module('dataView').provider('dataViewService', DataViewServiceProvider);
+  angular.module('cb.dataView').provider('dataViewService', DataViewServiceProvider);
 
   DataViewServiceProvider.$inject = ['lodash'];
   function DataViewServiceProvider(lodash) {
